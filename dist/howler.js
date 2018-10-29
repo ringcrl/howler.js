@@ -436,6 +436,17 @@
 
   // Setup the global audio controller.
   var Howler = new HowlerGlobal();
+  
+  // Because some devices seem to break the audioContext instance from hardware after being stationary for a while,
+  // the previous audioContext instance needs to be closed and reinitialized when used again
+  // Add a Howler.dispose to close the audioContext instance
+  Howler.ctx = undefined;
+  Howler.dispose = function() {
+    if (Howler.ctx) {
+      Howler.ctx.close();
+      Howler.ctx = undefined;
+    }
+  }
 
   /** Group Methods **/
   /***************************************************************************/
